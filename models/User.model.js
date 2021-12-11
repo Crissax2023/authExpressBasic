@@ -6,9 +6,12 @@ const userSchema = new Schema(
     username: {
       type: String,
       unique: true, //-> Ideally, should be unique, but its up to you
-      required:[true,"Se requiere un username"]
+      required:[true,"Se requiere un nombre de usuario"]
     },
-    password: String,
+    password: {
+      type:String,
+      required:true
+    },
     email:{
       type:String,
       match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
