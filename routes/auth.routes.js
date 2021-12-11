@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User.model")
 const bcryptjs = require("bcryptjs"); //<==== muy muy importante
 const mongoose  = require("mongoose");
+const {isLoggedIn,isLoggedOut} = require('../utils/route-guard') //<== middelware
 router.get("/signup", (req, res, next) => {
     res.render("auth/signup");
 });
@@ -32,7 +33,7 @@ router.post("/signup", async(req, res, next) => {
 
 })
 
-router.get("/login",(req,res,next)=>{
+router.get("/login", isLoggedIn  , (req,res,next)=>{
  
     res.render("auth/login")
 })
@@ -77,7 +78,14 @@ router.post("/login",async (req,res,next)=>{
     }
 })
 
-
+router.get('/logout',(req,res,next)=>{
+    req.session.destroy(err=>{
+        if(err){
+            next(err)
+        }
+        res.redirect("/")
+    })
+})
 
 
 module.exports = router;
