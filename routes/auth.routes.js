@@ -51,13 +51,23 @@ router.post("/login",async (req,res,next)=>{
         const user = await User.findOne({username})
 
         console.log("user",user)
-        
+        // VALIDAMOS SI EXISTE EL USERNAME EN NUESTA BASE DE DATOS (BD || DB)
         if(!user){
-
+            res.render("auth/login",{errorMessage:"La contraseña o el username son invalidos"})
+            return;
+        }  
+                                //bcryptjs.compareSync("perro","45678ashdas87d6tg3876d.978asd")
+        if(bcryptjs.compareSync(password,user.password)){ //recordar que bcryptjs.compareSync solo nos regresa un true || false 
+            const userSP = user.toObject()
+            delete userSP['password']
+            res.render('private/profile',{user:userSP})
+        }else{
+            res.render("auth/login",{errorMessage:"La contraseña o el username son invalidos"})
+            return;
         }
 
     }catch(error){
-
+        next(error)
     }
 })
 
