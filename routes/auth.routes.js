@@ -37,6 +37,30 @@ router.get("/login",(req,res,next)=>{
     res.render("auth/login")
 })
 
+
+router.post("/login",async (req,res,next)=>{
+    //async await try{}catch(erro){}
+    try{
+        const {username, password,...rest}=req.body
+        // validamos que el user nos mande datos!!!! 
+        if(username === '' || password === ''){
+            res.render("auth/login",{errorMessage:"Hey bro!!! llena los campos (username, password)"})
+            return;
+        }
+
+        const user = await User.findOne({username})
+
+        console.log("user",user)
+        
+        if(!user){
+
+        }
+
+    }catch(error){
+
+    }
+})
+
 // luego la usaremos
 router.get("/profile/:id", (req, res, next) => {
 
