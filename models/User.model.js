@@ -5,9 +5,14 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      // unique: true -> Ideally, should be unique, but its up to you
+      unique: true, //-> Ideally, should be unique, but its up to you
+      required:[true,"Se requiere un username"]
     },
     password: String,
+    email:{
+      type:String,
+      unique:[true,"El correo electronico ya fue asignado"]
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
