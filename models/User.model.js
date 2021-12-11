@@ -11,7 +11,10 @@ const userSchema = new Schema(
     password: String,
     email:{
       type:String,
-      unique:[true,"El correo electronico ya fue asignado"]
+      match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
+      unique: true,
+      lowercase: true,
+      trim: true
     }
   },
   {
