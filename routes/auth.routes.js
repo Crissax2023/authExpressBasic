@@ -60,7 +60,13 @@ router.post("/login",async (req,res,next)=>{
         if(bcryptjs.compareSync(password,user.password)){ //recordar que bcryptjs.compareSync solo nos regresa un true || false 
             const userSP = user.toObject()
             delete userSP['password']
-            res.render('private/profile',{user:userSP})
+            /** Guarar el usuario en session */
+                req.session.currentUser = userSP ;
+            /** */
+            
+            
+            //res.render('private/profile',{user:userSP})
+            res.redirect("/profile")
         }else{
             res.render("auth/login",{errorMessage:"La contraseña o el username son invalidos"})
             return;
@@ -71,27 +77,7 @@ router.post("/login",async (req,res,next)=>{
     }
 })
 
-// luego la usaremos
-router.get("/profile/:id", (req, res, next) => {
 
-    User.findById(req.params.id)
-    .then(user=>{
-        console.log("user1",user)
-        //return user without pass
-        const userPass =  user.toObject()
-        delete userPass.password
-        //delete userPass["password"]
-        //1) const {password,...restUser} = userPass
-
-        console.log("user2",userPass)
-
-        res.render("profile",{user:userPass})
-    })
-    .catch(error=>{
-        console.log("error:",error)
-        res.send("El error!!!")
-    })
-})
 
 
 module.exports = router;
